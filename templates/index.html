@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">ISO Quiz - Retos de Calidad de Software</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="language-selector">
+            <label for="language-select" id="language-label">Idioma:</label>
+            <select id="language-select">
+                <option value="es" selected>Español</option>
+                <option value="en">Inglés</option>
+            </select>
+        </div>
+        <header>
+            <h1 id="header-title">ISO Quiz</h1>
+            <p id="header-subtitle">Retos de Calidad de Software</p>
+        </header>
+
+        <!-- Sección de inicio -->
+        <section id="start-section" class="section">
+            <h2 id="start-title">Comienza el Reto</h2>
+            <form id="start-form">
+                <div class="form-group">
+                    <label for="username" id="username-label">Nombre de Usuario:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="standard" id="standard-label">Selecciona un Estándar:</label>
+                    <select id="standard" name="standard" required>
+                        <option value="" id="select-standard-option">-- Selecciona un estándar --</option>
+                        {% for key, value in standards.items() %}
+                        <option value="{{ key }}">{{ key }} - {{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="questions-count" id="questions-count-label">Número de Preguntas:</label>
+                    <select id="questions-count" name="questions-count">
+                        <option value="5">5 preguntas</option>
+                        <option value="10">10 preguntas</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" id="start-button">Comenzar</button>
+            </form>
+        </section>
+
+        <!-- Sección de preguntas -->
+        <section id="quiz-section" class="section hidden">
+            <div class="quiz-header">
+                <div class="user-info">
+                    <div id="user-display">
+                        <span id="user-label">Usuario:</span> 
+                        <span id="username-value"></span>
+                    </div>
+                    <div id="standard-display">
+                        <span id="standard-label">Estándar:</span> 
+                        <span id="standard-value"></span>
+                    </div>
+                </div>
+                <div class="progress">
+                    <div id="question-progress">
+                        <span id="question-label">Pregunta</span> 
+                        <span id="current-question-num">1</span> 
+                        <span id="of-label">de</span> 
+                        <span id="total-questions-num">5</span>
+                    </div>
+                    <div id="score-display">
+                        <span id="score-label">Puntuación:</span> 
+                        <span id="current-score">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <h3 id="question-text">¿Pregunta de ejemplo?</h3>
+                <div id="question-source" class="question-source hidden">
+                    <span id="source-icon">🤖</span>
+                    <span id="source-text">Generada por IA</span>
+                </div>
+                <div id="loading-indicator" class="loading-indicator hidden">
+                    <div class="spinner"></div>
+                    <p id="loading-text">Generando pregunta...</p>
+                </div>
+                <div class="options-container" id="options-container">
+                    <!-- Las opciones se cargarán dinámicamente -->
+                </div>
+            </div>
+
+            <div id="feedback-container" class="feedback-container hidden">
+                <div id="feedback-text"></div>
+                <button id="next-button" class="btn btn-secondary">Siguiente Pregunta</button>
+            </div>
+        </section>
+
+        <!-- Sección de resultados -->
+        <section id="results-section" class="section hidden">
+            <h2 id="results-title">Resultados</h2>
+            <div class="results-container">
+                <div id="final-score">
+                    <span id="final-score-label">Puntuación:</span> 
+                    <span id="final-score-value">0</span> 
+                    <span id="of-label-2">de</span> 
+                    <span id="final-total-questions">5</span>
+                </div>
+                <div id="percentage-score">0%</div>
+                <div id="feedback-message">¡Sigue estudiando!</div>
+            </div>
+            <button id="restart-button" class="btn btn-primary">Reiniciar</button>
+        </section>
+
+        <footer>
+            <p id="footer-text">Aplicación educativa para Ingeniería del Software - ISO/IEC 25010:2023</p>
+            <p>Universidad Francisco de Vitoria</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/translations.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
