@@ -1,0 +1,48 @@
+# docker-compose.yml
+# Configuración para ejecutar la aplicación Flask con Docker Compose
+
+version: '3.8'
+
+services:
+  quiz-app:
+    # Construir la imagen desde el Dockerfile en el directorio actual
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    
+    # Nombre del contenedor
+    container_name: iso-quiz-app
+    
+    # Mapeo de puertos: host:container
+    ports:
+      - "5000:5000"
+    
+    # Variables de entorno
+    environment:
+      - FLASK_ENV=production
+      - FLASK_APP=app.py
+      - FLASK_RUN_HOST=0.0.0.0
+      - FLASK_RUN_PORT=5000
+    
+    # Volúmenes para desarrollo (comentar en producción)
+    volumes:
+      - ./static:/app/static
+      - ./templates:/app/templates
+      - ./definitios_es.md:/app/definitios_es.md
+      - ./definitios_en.md:/app/definitios_en.md
+    
+    # Política de reinicio
+    restart: unless-stopped
+    
+    # Verificación de salud
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+# Redes (opcional)
+networks:
+  default:
+    name: quiz-app-network

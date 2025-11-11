@@ -1,0 +1,87 @@
+# .dockerignore para Back4App
+# Excluir archivos y directorios que no son necesarios en el contenedor
+
+# Entornos virtuales de Python
+venv/
+.venv/
+env/
+.env/
+
+# Archivos de Python compilados
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribuciones / empaquetado
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Logs
+*.log
+
+# Base de datos local
+*.db
+*.sqlite3
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistema operativo
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Archivos de Windows
+run.bat
+docker-run.bat
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# Archivos de test que no son necesarios en producción
+test_*.py
+
+# Cache de npm si existe
+node_modules/
+npm-debug.log*
+
+# Archivos de documentación que no son necesarios en el contenedor
+README.md
+README-Docker.md
+*.md
+
+# Archivos de Docker local (no necesarios en Back4App)
+docker-compose.yml

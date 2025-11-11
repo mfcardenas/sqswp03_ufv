@@ -1,0 +1,29 @@
+# back4app.yml
+# Configuración específica para Back4App
+
+# Información de la aplicación
+app:
+  name: "ISO Quiz App"
+  description: "Quiz Application for ISO Standards"
+  version: "1.0.0"
+
+# Configuración del contenedor
+container:
+  port: $PORT
+  dockerfile: "Dockerfile"
+
+# Variables de entorno para Back4App
+environment:
+  FLASK_APP: "app.py"
+  FLASK_ENV: "production"
+  FLASK_RUN_HOST: "0.0.0.0"
+  
+# Recursos del contenedor
+resources:
+  memory: "512M"
+  cpu: "0.5"
+
+# Configuración de salud
+health:
+  path: "/"
+  interval: 30
