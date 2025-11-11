@@ -1,15 +1,144 @@
-# 🚀 Guía de Despliegue en Back4App
+# 🚀 Guía de Despliegue en Back4App - ACTUALIZADA
 
-## Preparación para Back4App
+## ⚠️ SOLUCIÓN AL ERROR: "Either dockerfile must expose tcp port or define port in settings"
 
-Tu aplicación ya está configurada y lista para desplegar en Back4App. He modificado los archivos necesarios para cumplir con los requisitos de Back4App.
+### El Problema
+Back4App requiere que el `Dockerfile` tenga un comando `EXPOSE` explícito para detectar el puerto de la aplicación.
 
-### ✅ Archivos optimizados para Back4App:
+### ✅ Solución Aplicada
+He actualizado el `Dockerfile` con la configuración correcta:
 
-1. **`Dockerfile`** - Modificado para puerto dinámico
-2. **`app.py`** - Actualizado para usar variable de entorno PORT
-3. **`.dockerignore`** - Optimizado para Back4App
-4. **`back4app.yml`** - Archivo de configuración opcional
+```dockerfile
+# Exponer puerto 5000 para Back4App
+EXPOSE 5000
+
+# Ejecutar la aplicación 
+CMD ["python", "app.py"]
+```
+
+### Configuración del Puerto en app.py
+El archivo `app.py` ya está configurado para manejar el puerto dinámico de Back4App:
+
+```python
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
+```
+
+**Cómo funciona:**
+- Back4App asigna automáticamente un puerto usando la variable `PORT`
+- Si no existe `PORT`, usa el puerto 5000 por defecto
+- El `EXPOSE 5000` en el Dockerfile permite que Back4App detecte el puerto correctamente
+
+## 📋 Pasos Actualizados para Desplegar
+
+### 1. Verificar Archivos
+✅ **Dockerfile** - Actualizado con `EXPOSE 5000`
+✅ **app.py** - Configurado para puerto dinámico  
+✅ **requirements.txt** - Dependencias completas
+✅ **.dockerignore** - Optimizado para Back4App
+
+### 2. Desplegar en Back4App
+
+1. **Comprimir proyecto** (ZIP) o **subir a Git**
+2. **Crear app** en Back4App → "Container as a Service"
+3. **Subir código** → Back4App detectará automáticamente el Dockerfile
+4. **Deploy** → Esperar 5-10 minutos para el build
+
+### 3. Verificar Despliegue
+
+Una vez completado:
+- ✅ **Puerto detectado:** 5000
+- ✅ **Estado:** Running
+- ✅ **URL disponible:** https://tu-app.back4app.io
+
+## 🔧 Configuración Técnica
+
+### Dockerfile Optimizado para Back4App:
+```dockerfile
+FROM python:3.9-slim
+WORKDIR /app
+
+# Instalar dependencias del sistema
+RUN apt-get update && apt-get install -y gcc curl && rm -rf /var/lib/apt/lists/*
+
+# Instalar dependencias Python
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copiar aplicación
+COPY . .
+
+# ⚠️ IMPORTANTE: EXPOSE explícito para Back4App
+EXPOSE 5000
+
+# Variables de entorno
+ENV FLASK_APP=app.py
+ENV FLASK_ENV=production
+
+# ⚠️ IMPORTANTE: Comando simple para Back4App
+CMD ["python", "app.py"]
+```
+
+## 🚨 Errores Comunes y Soluciones
+
+### ❌ Error: "Either dockerfile must expose tcp port..."
+**Causa:** Falta `EXPOSE` en el Dockerfile
+**Solución:** ✅ Ya corregido - `EXPOSE 5000` añadido
+
+### ❌ Error: "Container failed to start"
+**Causa:** Puerto mal configurado en app.py
+**Solución:** ✅ Ya corregido - Puerto dinámico configurado
+
+### ❌ Error: "Build failed"
+**Verificar:**
+- Todos los archivos están presentes
+- `requirements.txt` es válido
+- No hay errores de sintaxis en el código
+
+## 🧪 Test Local Antes de Desplegar
+
+```bash
+# Construir imagen Docker
+docker build -t iso-quiz-test .
+
+# Probar localmente
+docker run -p 5000:5000 iso-quiz-test
+
+# Verificar que funciona en http://localhost:5000
+```
+
+## 📱 Funcionalidad de la Aplicación
+
+Una vez desplegada, tu aplicación incluirá:
+
+- **📚 Quiz interactivo** sobre estándares ISO
+- **🌍 Multiidioma** (Español/Inglés)  
+- **📊 Evaluación automática** con puntuaciones
+- **💡 Definiciones detalladas** de conceptos ISO
+- **🎯 Preguntas específicas** por estándar (ISO 9241-11, ISO/IEC 25010, etc.)
+
+## 🔗 URLs de Acceso
+
+Después del despliegue:
+- **Aplicación principal:** `https://tu-app.back4app.io`
+- **Modo español:** `https://tu-app.back4app.io?lang=es`
+- **Modo inglés:** `https://tu-app.back4app.io?lang=en`
+
+## 📞 Soporte Técnico
+
+**Para problemas con el despliegue:**
+- Revisa los logs en Back4App Dashboard
+- Verifica que el puerto 5000 esté detectado
+- Confirma que la aplicación inicia correctamente
+
+**Contacto:** sqs@ufv.es
+
+---
+
+### 🎉 ¡LISTO PARA DESPLEGAR!
+
+Con el `Dockerfile` corregido, tu aplicación debería desplegarse exitosamente en Back4App sin errores de puerto.
 
 ## 📋 Pasos para Desplegar en Back4App
 
